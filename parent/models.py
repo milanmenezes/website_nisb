@@ -32,10 +32,14 @@ class Events(models.Model):
 			)
 	# To be followed as EVT-yr-no
 	eventID = models.CharField(max_length=7, primary_key=True)
+	# name
+	eventName = models.CharField(max_length=12, null=False, default="Suggest")
 	# Registration link
 	regLink = models.URLField(unique=True)
 	# Registration Deadline (if required add null=False as an argument)
 	deadLine = models.DateField()
+	#venue
+	venue = models.CharField(max_length=20, default="To be updated")
 	# Event start date
 	eventDate = models.DateField(null=False)
 	# Feedback link

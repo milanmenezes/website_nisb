@@ -24,13 +24,15 @@ def index(request):
 
 def events(request):
 	dateToday = datetime.date.today()
-	pastEvents = Events.objects.filter(eventDate<dateToday).order_by('eventDate')[:5]
-	futureEvents = Events.objects.filter(eventDate>dateToday).order_by('eventDate')[:5]
-	presentEvents = Events.objects.filter(eventDate==dateToday)
+	pastEvents = Events.objects.filter(eventDate__lt=dateToday).order_by('eventDate')[:5]
+	futureEvents = Events.objects.filter(eventDate__gt=dateToday).order_by('eventDate')[:5]
+	presentEvents = Events.objects.filter(eventDate=dateToday)
+	eventsAll = list(pastEvents)+list(presentEvents)+list(futureEvents)
 	context = {
 			'pastEvents' : pastEvents,
 			'futureEvents' : futureEvents,
 			'todayEvents' : presentEvents,
+			'allEvents' : eventsAll,
 			}
 	template = loader.get_template('events.html')
 	return HttpResponse(template.render(context, request))
@@ -41,19 +43,19 @@ def fg(request):
 	return HttpResponse(template.render(request))
 
 def cs(request):
-	csEvents = Events.objects.filter(ag==1).order_by('eventDate')[:7]
+	csEvents = Events.objects.filter(ag=1).order_by('eventDate')[:7]
 	context = { 'eventsCS' : csEvents, }
 	template = loader.get_template('cs.html')
 	return HttpResponse(template.render(context, request))
 
 def wie(request):
-	wieEvents = Events.objects.filter(ag==2).order_by('eventDate')[:7]
+	wieEvents = Events.objects.filter(ag=2).order_by('eventDate')[:7]
 	context = { 'eventsWIe' : wieEvents, }
 	template = loader.get_template('wie.html')
 	return HttpResponse(template.render(context, request))
 def members(request):
 	return HttpResponse("Waiting for you to join! :)")
 
-def aboutUs(request):
+def about(request):
 	template = loader.get_template('about.html')
 	return HttpResponse(template.render(request))
